@@ -16,6 +16,6 @@ export class WeatherService {
 
 	getCurrentWeather() {
 		// return this.httpClient.get(`api.openweathermap.org/data/2.5/weather?q=${this.getLocation()}&appid=${this.getApiKey()}&units=metric`);
-		return this.httpClient.get('http://api.openweathermap.org/data/2.5/weather?q=Kalmar&appid=' + this.getApiKey())
+		return this.httpClient.get('http://api.openweathermap.org/data/2.5/weather?q=Kalmar&appid=' + this.getApiKey() + '&units=metric').toPromise();
 	}
 }

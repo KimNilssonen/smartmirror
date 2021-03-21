@@ -5,6 +5,7 @@ import { AppComponent } from './app.component';
 import { ClockModule } from './clock/clock.module';
 import { WeatherModule } from './weather/weather.module';
 import { HttpClientModule } from '@angular/common/http';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
 	declarations: [
@@ -12,6 +13,7 @@ import { HttpClientModule } from '@angular/common/http';
 	],
 	imports: [
 		BrowserModule,
+		CommonModule,
 		HttpClientModule,
 		ClockModule,
 		WeatherModule

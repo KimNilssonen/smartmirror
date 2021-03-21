@@ -1,5 +1,8 @@
-<div class="weather">
-	<div class="temp"> °C</div>
-	<div class="wind">vind m/s</div>
-	<div class="humidity">fuktighet %</div>
-</div>
+<ng-container *ngIf="ready">
+	<div class="weather">
+		<div class="description">Weather: {{ weather.description }}</div>
+		<div class="temp"> {{ weather.temp }} °C (Feels like: {{ weather.feels_like }} °C)</div>
+		<div class="wind">{{ weather.wind }} m/s</div>
+		<div class="humidity">{{ weather.humidity }} %</div>
+	</div>
+</ng-container>

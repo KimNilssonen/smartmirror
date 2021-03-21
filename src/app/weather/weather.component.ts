@@ -1,6 +1,5 @@
-import { Component, OnInit } from "@angular/core";
-import { Observable } from "rxjs";
-import { WeatherReponse } from "./weather";
+import { Component, OnDestroy, OnInit } from "@angular/core";
+import { Weather } from "./weather";
 import { WeatherService } from "./weather.service";
 
 @Component({
@@ -8,25 +7,47 @@ import { WeatherService } from "./weather.service";
 	templateUrl: './weather.component.html',
 	styleUrls: ['./weather.component.less']
 })
-export class WeatherComponent implements OnInit {
-	weatherReponse: WeatherReponse;
+export class WeatherComponent implements OnInit, OnDestroy {
+	ready: boolean = false;
+	weather: Weather;
+
+	private timer = null;
 
 	constructor(private weatherService: WeatherService) { }
 
 	async ngOnInit() {
-		this.weatherService.getCurrentWeather()
-			.subscribe(data => {
-				console.log(JSON.stringify(data));
-			});
-		// this.mapValues(response);
+		await this.fetchAndMapWeather();
+		this.ready = true;
+		this.timer = this.updateWeather();
 	}
 
-	mapValues(response: any) {
-		this.weatherReponse = new WeatherReponse(response);
-		console.log('weatherResponse:', this.weatherReponse)
+	mapValues(data: any) {
+		this.weather = new Weather({
+			description: data.weather[0].description,
+			temp: data.main.temp,
+			feels_like: data.main.feels_like,
+			temp_max: data.main.temp_max,
+			temp_min: data.main.temp_min,
+			preassure: data.main.pressure,
+			humidity: data.main.humidity,
+			wind: data.wind.speed,
+			sunrise: data.sys.sunrise,
+			sunset: data.sys.sunset
+		});
 	}
 
-	async getTemperature() {
+	async updateWeather() {
+		setInterval(() => {
+			this.fetchAndMapWeather();
+		}, 60000);
+	}
 
+	async fetchAndMapWeather() {
+		const data = await this.weatherService.getCurrentWeather();
+		this.mapValues(data);
+	}
+
+	ngOnDestroy() {
+		clearInterval(this.timer);
 	}
 }
